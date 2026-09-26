@@ -370,7 +370,7 @@ public class Modelo {
         return res; //Devolvemos el resultado
     }
 
-    //Consulta para sacar el historial de un ejercicio
+    //Consulta para sacar el historial de pesaje
     public Cursor SeleccionarPesaje(Context context){
         SQLiteDatabase db = this.getConn(context);
         Cursor resultados;
@@ -379,7 +379,7 @@ public class Modelo {
         resultados = db.rawQuery(sqlSelect, null);
 
         //db.close();
-        return resultados; //Devolvemos el historial del ejercicio
+        return resultados; //Devolvemos el historial de pesaje
     }
 
     //Metodo para insetar en Pesaje

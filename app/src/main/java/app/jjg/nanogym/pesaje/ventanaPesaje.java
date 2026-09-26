@@ -1,3 +1,10 @@
+/*
+Clase ventanaPesaje.java
+Fecha actualiza: 28/03/2026
+Autor: Jorge Jimenez Garrido
+Descripcion: Clase de la ventana activity_ventana_pesaje.xml
+*/
+
 package app.jjg.nanogym.pesaje;
 
 import android.content.Context;
@@ -62,27 +69,29 @@ public class ventanaPesaje extends AppCompatActivity {
         });
     }
 
-    //Metodo para pintar la tabla del Pesjae  Fecha / Peso
+    //Metodo para pintar la tabla del Pesaje  Fecha / Peso
     private void pintarPesaje(){
 
-        List<PesajeTL> h = consultaBD(); //Llamamos a la consulta que nos devolvera una lista donde almacena objetos de tipo HistorialTL
+        List<PesajeTL> h = consultaBD(); //Llamamos a la consulta que nos devolvera una lista donde almacena objetos de tipo PesajeTL
         tableLayout = findViewById(R.id.tableLayout); //Creamos nuestra tabla
         int contadorArray = h.size()-1; //Un contador para añadir los datos al contrario a como nos llega, recordar que llegan en orden del mas nuevo al mas antiguo
 
+        //Vamos a recorrer los datos que han llegado para pintarlos en la tabla
         for (PesajeTL datos : h) {
 
             TableRow tablaPesaje = new TableRow(this);
             //***************************************************************************************************************************************
 
-            //Voy a rellenar la arraylist de los puntos del grafico del peso y la array de las fechas
-            //puntos.add(new Entry((contador), Float.parseFloat(datos.getPeso())));
+            //Voy a rellenar la arraylist de los puntos del grafico del peso y la array de las fechas, esto servira para luego crear el garfico
+            //como llega del peso mas nuevo registrado al mas antiguos, por eso se guarda alreves para que el mas antigu siempre este en la posiscion 0
             peso[contadorArray] = datos.getPeso();
             fechas[contadorArray] = datos.getDate();
             contadorArray--;
 
+            //Luego seguimos pintando los datios en la tabla con normalidad
             // Crear las celdas para cada fila
             EditText textViewDate = new EditText(this);
-            textViewDate.setText(datos.getDate());  // Mostrar el nombre de la rutina (Las demas explicaciones de los siguiente metodos llamado estan en Peso y RM)
+            textViewDate.setText(datos.getDate());  // Mostrar el nombre de la rutina (Las demas explicaciones de los siguiente metodos llamado estan en Peso y RM de la clase ventanaRutEjerc.java)
             textViewDate.setBackgroundResource(R.drawable.border_tabla);
             textViewDate.setPadding(8, 8, 8, 8);
             textViewDate.setEnabled(false);       // No editable
@@ -93,7 +102,7 @@ public class ventanaPesaje extends AppCompatActivity {
             //***************************************************************************************************************************************
 
             EditText textViewPeso = new EditText(this);
-            textViewPeso.setText(datos.getPeso());  // Mostrar las repeticiones (Las demas explicaciones de los siguiente metodos llamado estan en Peso y RM)
+            textViewPeso.setText(datos.getPeso());
             textViewPeso.setBackgroundResource(R.drawable.border_tabla);
             textViewPeso.setPadding(8, 8, 8, 8);
             textViewPeso.setSingleLine(true);
@@ -111,7 +120,7 @@ public class ventanaPesaje extends AppCompatActivity {
 
             contador++;
 
-            if(contador == 7){ //Para que solo muestre los 5 ultimos cambios
+            if(contador == 7){ //Para que solo muestre los 6 ultimos cambios
                 break;
             }
         }
@@ -122,20 +131,21 @@ public class ventanaPesaje extends AppCompatActivity {
     private List<PesajeTL> consultaBD(){
 
         Modelo obj = new Modelo();
-        Cursor resultados = obj.SeleccionarPesaje(ventanaPesaje.this); //Llamamos al SeleccionarHistorial para hacer la consulta en la db
+        Cursor resultados = obj.SeleccionarPesaje(ventanaPesaje.this); //Llamamos al SeleccionarPesaje para hacer la consulta en la db
 
-        List<PesajeTL> h = new ArrayList<>(); //Lista donde vamos almacenar cada objeto HistorialTl es decir cada fila de nuestra futura tabla
+        List<PesajeTL> h = new ArrayList<>(); //Lista donde vamos almacenar cada objeto PesajeTl es decir cada fila de nuestra futura tabla
 
         if (resultados != null && resultados.moveToFirst()) {
             do {
                 int peso = resultados.getInt(1);
                 String date = resultados.getString(2);
 
+                //Crea un objeto PesajeTL y le añadimos el pesaje de ese dia
                 PesajeTL hisPesa = new PesajeTL();
                 hisPesa.setPeso(Integer.toString(peso)); //Guardo peso
                 hisPesa.setDate(date); //Guardo la fecha
 
-                // Crea un objeto Historial y le añadimos el historial de ese ejercicio
+
                 h.add(hisPesa);
 
             } while (resultados.moveToNext());  // Continúa hasta el siguiente resultado en el cursor
@@ -153,20 +163,40 @@ public class ventanaPesaje extends AppCompatActivity {
     //Metodo que usamos para pintar el grafico, estas clases que usamos vienen de la libreria MPAndroidChart de github
     private void pintarGrafico(){
 
-        //Este for lo usamos para almacenar la array en los puntos correctamente desde 0 al X pero con el orden que pusimos en la array
+        //RESUMEN DE ESTE METODO (un poco mas chill):
+        /*Basicamente nuestro grafico sabe el peso que llega ponte: 55.0 eso sabe que es lo que van en eje (y) pero como es primero que
+        llega pues en el eje (x) pone 0, claro ese 0 lo formatea a la primera fecha guardada en la array de fecha, es decir que nuestro grafico no
+        tiene ni idea de las fechas simplemnet pinta los puntos como se almacenaron en los puntos del peso (0,55.0),(1,55.0) y ese eje x para no pintar numero lo traduce
+        a lo que tenemos guardados en la array de fechas(0) fechas(1) etc...
+         */
 
+        //Este for lo usamos para almacenar la array en los puntos correctamente desde 0 al X pero con el orden que pusimos en la array
+        /*
+        En el eje Y (donde van los pesos), no solemos usar un "traductor"
+        (ValueFormatter) porque los pesos ya son números reales. El gráfico sabe perfectamente dónde dibujar el 75.5 o el 80.0.
+        */
+
+        //Para que toda esta logica tenga sentido, anteriormente hemos guarado en la arry peso y arraey fecha los datos a la vez en la misma posicion,
+        //es decir, 55kg 01/01/2025 ambos se han guardao en sus arrays corresponidentes en la misma psoicion ej: pesos(0),fechas(0)
         for(int i = 0; i<contador; i++){
 
-            puntos.add(new Entry(i, Float.parseFloat(peso[i])));
+            puntos.add(new Entry(i, Float.parseFloat(peso[i]))); //aqui guardamos el orden los pesos y=peso1 en el x=0, y=peso2 en el x=1
         }
 
         //Este objeto con su metodo para formatear las fechas en un valor para los puntos 0,1,2,3,4,5 que hemos puesto antes en el eje x
+        /*
+        El gráfico no sabe qué es un objeto Fecha, él solo entiende de números (coordenadas X e Y).
+        Para solucionar esto, En el for: En lugar de intentar pasarle la fecha al punto, le pasas la posición i (0, 1, 2...).
+        Así, el primer punto está en X=0, el segundo en X=1, etc.
+        El ValueFormatter: Es como un traductor. Cuando el gráfico va a dibujar la etiqueta del eje X para la posición 0, le pregunta al ValueFormatter: "Oye, ¿qué texto pongo aquí?".
+        El formateador mira tu array de fechas en esa posición y le responde: Pon la fecha que está en fechas[0].
+        */
         ValueFormatter formatter = new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                int index = (int) value;
+                int index = (int) value; // El gráfico nos da un número (0.0, 1.0...)
                 if (index >= 0 && index < fechas.length) {
-                    return fechas[index];
+                    return fechas[index]; // Devolvemos el texto de la fecha
                 } else {
                     return "";
                 }
@@ -177,9 +207,9 @@ public class ventanaPesaje extends AppCompatActivity {
 
         XAxis xAxis = grafico.getXAxis();
         xAxis.setGranularity(1f);  // Para que no muestre valores intermedios
-        xAxis.setValueFormatter(formatter);
+        xAxis.setValueFormatter(formatter); //antes de escribir cualquier número del gráfico, pásalo primero por este traductor, sin esta linea, el gráfico simplemente pondría los numeros brutos: 0.0, 1.0, 2.0
         xAxis.setTextColor(Color.WHITE); //Color eje x
-        xAxis.setAvoidFirstLastClipping(true); //para que tenga espacion en eje x y se vean bien las fechas de los extremos
+        xAxis.setAvoidFirstLastClipping(true); //para que tenga espacio en eje x y se vean bien las fechas de los extremos
 
 
         YAxis leftAxis = grafico.getAxisLeft();
@@ -187,14 +217,6 @@ public class ventanaPesaje extends AppCompatActivity {
 
         YAxis rightAxis = grafico.getAxisRight();
         rightAxis.setEnabled(false); //ocultar el de la derecha
-
-        //Crear los datos del gráfico
-        /*ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(0, 1)); // X=0, Y=1
-        entries.add(new Entry(1, 3)); // X=1, Y=3
-        entries.add(new Entry(2, 2)); // etc.
-        entries.add(new Entry(3, 5));
-        entries.add(new Entry(4, 3));*/
 
         //Crear la linea de los puntos
         LineDataSet dataSet = new LineDataSet(puntos, "Peso (kg)");
@@ -221,29 +243,31 @@ public class ventanaPesaje extends AppCompatActivity {
         grafico.invalidate();
     }
 
+    //TODO POR AQUI PONIENDO COMENTARIOS
+    //Metodo que usamos para insertar nuevos pesajes
     public void onPesaje(View view){
-        // 1. Inflar el diseño personalizado
+
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_contacto, null);
 
         EditText etPeso = dialogView.findViewById(R.id.etPeso);
         EditText etFecha = dialogView.findViewById(R.id.etFecha);
         CheckBox cbNoFecha = dialogView.findViewById(R.id.cbNoFecha);
-        // Configurar el CheckBox para deshabilitar el campo de fecha
+
         cbNoFecha.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                etFecha.setEnabled(false); // Bloquea el campo
-                etFecha.setText("");       // Opcional: limpia lo que haya escrito
+                etFecha.setEnabled(false);
+                etFecha.setText("");
             } else {
-                etFecha.setEnabled(true);  // Lo vuelve a habilitar
+                etFecha.setEnabled(true);
             }
         });
 
-        // 2. Construir el AlertDialog
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Registro de Peso");
         builder.setView(dialogView);
 
-        // Botón de Aceptar
+
         builder.setPositiveButton("Guardar", (dialog, which) -> {
             String peso = etPeso.getText().toString();
             String fecha = cbNoFecha.isChecked() ? "Sin fecha" : etFecha.getText().toString();
@@ -252,7 +276,7 @@ public class ventanaPesaje extends AppCompatActivity {
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             String fechaFormateada = fecha_act.format(formato);
 
-            // Aquí puedes procesar los datos (guardar en BD o mostrar en consola)
+
             //Toast.makeText(this, "Guardado: " + peso + "kg el " + fecha, Toast.LENGTH_SHORT).show();
             PesajeTL hisPesa = new PesajeTL();
             hisPesa.setPeso(peso); //Guardo peso
@@ -274,20 +298,19 @@ public class ventanaPesaje extends AppCompatActivity {
         // Botón de Cancelar
         builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
 
-        // 3. Mostrar el diálogo
+        // Mostrar el diálogo
         builder.create().show();
 
     }
 
 
-    //Consulta a la DB para sacar el pesaje, devuelve una lista de objetos PesajeTL
+    //Consulta a la DB para insertar el pesaje en PesajeTL
     private void consultaBDInsertar(PesajeTL dto){
         Modelo obj = new Modelo();
-        int resultados = obj.InsertarPesaje(ventanaPesaje.this,dto); //Llamamos al SeleccionarHistorial para hacer la consulta en la db
+        int resultados = obj.InsertarPesaje(ventanaPesaje.this,dto); //Llamamos al InsertarPesaje para insertar el pesaje en la db
     }
 
 
-    //TODO tenmos que hacer el registrar un pesaje nuevo
     private TableLayout tableLayout;
     private LineChart grafico; //variable para nuestro grafico
     private ArrayList<Entry> puntos = new ArrayList<>(); //puntos de nuestra grafica
