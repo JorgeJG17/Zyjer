@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fondo oscuro con bloques de color deliberadamente duros para conservar el acabado pixel art. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/halloween_night_base" />
+
+    <!-- Luna cuadrada, parcialmente oculta detras del encabezado. -->
+    <item
+        android:gravity="top|end"
+        android:right="26dp"
+        android:top="48dp"
+        android:width="42dp"
+        android:height="42dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFD45A" />
+        </shape>
+    </item>
+    <item
+        android:gravity="top|end"
+        android:right="26dp"
+        android:top="48dp"
+        android:width="8dp"
+        android:height="8dp">
+        <shape android:shape="rectangle"><solid android:color="#C77A2A" /></shape>
+    </item>
+    <item
+        android:gravity="top|end"
+        android:right="42dp"
+        android:top="65dp"
+        android:width="7dp"
+        android:height="7dp">
+        <shape android:shape="rectangle"><solid android:color="#C77A2A" /></shape>
+    </item>
+
+    <!-- Pixeles de ambiente en los bordes inferiores. -->
+    <item android:gravity="bottom|start" android:left="18dp" android:bottom="104dp" android:width="8dp" android:height="8dp">
+        <shape android:shape="rectangle"><solid android:color="#7D3C98" /></shape>
+    </item>
+    <item android:gravity="bottom|end" android:right="20dp" android:bottom="122dp" android:width="10dp" android:height="10dp">
+        <shape android:shape="rectangle"><solid android:color="#E46C23" /></shape>
+    </item>
+</layer-list>

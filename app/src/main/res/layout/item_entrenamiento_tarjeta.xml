@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Tarjeta de ventanaEntrenamientoTarjetas -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/training_exercise_card"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_ejercicio"
+            android:layout_width="254dp"
+            android:layout_height="310dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="Imagen del ejercicio"
+            android:scaleType="centerCrop"
+            android:src="@android:drawable/ic_menu_gallery" />
+        <Button android:id="@+id/bt_imagen_ejercicio" android:fontFamily="@font/departuremonoregular" android:background="@drawable/halloween_action_button"  app:backgroundTint="@null" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Elegir imagen" />
+        <TextView android:id="@+id/tv_nombre_ejercicio" android:textColor="#f3f3f3" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:gravity="center" android:textSize="24sp" android:textStyle="bold" />
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:orientation="horizontal">
+            <EditText android:id="@+id/et_series_tarjeta" android:textColor="#f3f3f3" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:hint="Series" android:inputType="number" />
+            <EditText android:id="@+id/et_repes_tarjeta" android:textColor="#f3f3f3" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:hint="Repes" android:inputType="number" />
+            <EditText android:id="@+id/et_peso_tarjeta" android:textColor="#f3f3f3" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:hint="Peso" android:inputType="numberDecimal" />
+        </LinearLayout>
+        <TextView android:id="@+id/tv_rm_tarjeta" android:textColor="#f3f3f3" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:gravity="center" android:textSize="20sp" android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/bt_reordenar_ejercicio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/departuremonoregular"
+            android:background="@drawable/halloween_action_button"
+            android:text="Reordenar ejercicio"
+            app:backgroundTint="@null" />
+    </LinearLayout>
+</ScrollView>

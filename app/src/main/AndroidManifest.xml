@@ -2,16 +2,32 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />    <!--solicitar y publicar notificaciones en Android 13+ -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!--ecibir el evento de reinicio y restaurar la alarma. -->
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="NanoGym"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.GymRutinaProyect"
         tools:targetApi="31">
+
+        <!--Registramos el receiver para que andoid sepa que la clase existe -->
+        <!--Si resive uno de los tres evento, llamara a la clase, al metodo onReceive, uno de los eventos es nuestro-->
+        <receiver
+            android:name=".notificaciones.RecordatorioEntrenamientoReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="app.jjg.zyjer.RECORDATORIO_ENTRENAMIENTO" /> <!-- Accion propia del recordatorio diario -->
+                <action android:name="app.jjg.zyjer.RECORDATORIO_FINAL_DIA" /> <!-- Accion propia del recordatorio nocturno -->
+                <action android:name="android.intent.action.BOOT_COMPLETED" /> <!-- Reinicio del dispositivo -->
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" /> <!-- Actualizacion de la aplicacion -->
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".calendario.Calendario"
             android:exported="false" />
@@ -53,6 +69,10 @@
             android:name=".ventanasentrenar.ventanaRutEjerc"
             android:exported="false"
             android:screenOrientation="portrait" /> <!-- Para desactiivar la rotacion, solo vertical -->
+        <activity
+            android:name=".ventanasentrenar.ventanaEntrenamientoTarjetas"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ventanasentrenar.ventana_entrenar"
             android:exported="false"

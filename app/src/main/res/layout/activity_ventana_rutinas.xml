@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#292929"
+    android:background="@drawable/halloween_screen_background"
     tools:context=".ventanascrear.ventanaRutinas">
 
     <TextView
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/departuremonoregular"
-        android:text="Versión: 1.4Beta"
+        android:text="Versión: 2.0"
         android:textColor="#FFFFFF"
         android:textColorLink="#000000"
         android:textSize="13sp"
@@ -42,19 +42,19 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Creador de Rutinas"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
+        android:layout_width="327dp"
+        android:layout_height="43dp"
         android:fontFamily="@font/departuremonoregular"
+        android:text="Creador de Rutinas"
+        android:textColor="#FFAA32"
+        android:textSize="28sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintHorizontal_bias="0.104"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.042" />
+        app:layout_constraintVertical_bias="0.069" />
 
     <TextView
         android:id="@+id/textView4"
@@ -140,7 +140,7 @@
         android:id="@+id/btSiguienteRut"
         android:layout_width="170dp"
         android:layout_height="58dp"
-        android:background="@drawable/imagen_bt"
+        android:background="@drawable/halloween_action_button"
         android:fontFamily="@font/departuremonoregular"
         android:onClick="crearRutClick"
         android:text="Siguiente"

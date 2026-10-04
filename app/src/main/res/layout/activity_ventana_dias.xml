@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#292929"
+    android:background="@drawable/halloween_screen_background"
     tools:context=".ventanasentrenar.ventana_dias">
 
     <TextView
@@ -28,7 +28,7 @@
         android:id="@+id/layoutBotones"
         android:layout_width="331dp"
         android:layout_height="518dp"
-        android:background="#292929"
+        android:background="@drawable/halloween_routines_panel"
         android:orientation="vertical"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/departuremonoregular"
-        android:text="Versión: 1.4Beta"
+        android:text="Versión: 2.0Beta"
         android:textColor="#FFFFFF"
         android:textColorLink="#000000"
         android:textSize="13sp"

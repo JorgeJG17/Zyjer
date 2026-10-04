@@ -3,15 +3,15 @@ plugins {
 }
 
 android {
-    namespace = "app.jjg.nanogym"
+    namespace = "app.jjg.zyjer"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "app.jjg.nanogym"
+        applicationId = "app.jjg.zyjer"
         minSdk = 26
         targetSdk = 34
-        versionCode = 7 //este siempre sumar +1
-        versionName = "1.4Beta"
+        versionCode = 8 //este siempre sumar +1
+        versionName = "2.0Beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation("androidx.viewpager2:viewpager2:1.1.0") //ViewPager2 usada para ventanaEntrenamientoTarjetas
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.lifecycle.runtime.ktx)

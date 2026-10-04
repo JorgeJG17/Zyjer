@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Ventana de ventanaEntrenamientoTarjetas -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/halloween_screen_background">
+
+    <TextView
+        android:id="@+id/tv_dia_entrenamiento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/tv_nombre_dia_entrenamiento"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Nombre del día"
+        android:singleLine="true"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#DDFFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_dia_entrenamiento"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@id/tv_dia_entrenamiento" />
+
+    <TextView
+        android:id="@+id/tv_indicador_tarjetas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_dia_entrenamiento" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/pager_ejercicios"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@id/barra_acciones_entrenamiento"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_indicador_tarjetas" />
+
+    <LinearLayout
+        android:id="@+id/barra_acciones_entrenamiento"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="18dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/bt_historial_tarjetas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:background="@drawable/halloween_action_button"
+            android:fontFamily="@font/departuremonoregular"
+            android:text="Historial"
+            app:backgroundTint="@null" />
+        <Button android:id="@+id/bt_eliminar_tarjetas" android:fontFamily="@font/departuremonoregular" app:backgroundTint="@null"  android:background="@drawable/halloween_action_button" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Eliminar" />
+        <Button android:id="@+id/bt_anadir_tarjetas" android:fontFamily="@font/departuremonoregular"  app:backgroundTint="@null"  android:background="@drawable/halloween_action_button" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Añadir" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
