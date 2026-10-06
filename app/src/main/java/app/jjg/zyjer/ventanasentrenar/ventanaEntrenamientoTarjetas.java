@@ -109,6 +109,11 @@ public class ventanaEntrenamientoTarjetas extends AppCompatActivity {
                 selectorImagen.launch("image/*");
             }
 
+            //El adaptador detecta la pulsacion, pero la Activity decide eliminar la imagen.
+            @Override public void alBorrarImagen(EjercicioTarjeta ejercicio) {
+                confirmarEliminarImagen(ejercicio);
+            }
+
             //El adaptador detecta la pulsacion, pero la Activity decide las opciones de orden.
             @Override public void alSolicitarReordenar(EjercicioTarjeta ejercicio) {
                 mostrarDialogoReordenar(ejercicio);
@@ -334,6 +339,29 @@ public class ventanaEntrenamientoTarjetas extends AppCompatActivity {
         }
     }
 
+    //Pide confirmacion y elimina tanto la relacion en SQLite como el archivo privado de la imagen.
+    private void confirmarEliminarImagen(EjercicioTarjeta ejercicio) {
+        if (ejercicio.rutaImagen == null) {
+            Toast.makeText(this, "Este ejercicio no tiene imagen", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("Borrar imagen")
+                .setMessage("Se eliminará la imagen asociada a \"" + ejercicio.nombre + "\".")
+                .setPositiveButton("Borrar", (dialog, which) -> {
+                    if (modelo.EliminarImagenEjercicio(this, ejercicio.id) == 1) {
+                        ejercicio.rutaImagen = null;
+                        adapter.notifyDataSetChanged();
+                        Toast.makeText(this, "Imagen eliminada", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "No se pudo eliminar la imagen", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
     /** Copia la imagen a filesDir; SQLite solo conservará la ruta resultante. */
     private ArchivoImportado copiarImagenAlAlmacenamientoPrivado(Uri uri) throws Exception {
         File carpeta = new File(getFilesDir(), "imagenes_ejercicios"); //Recuperamos la carpeta privada de la app
@@ -450,7 +478,7 @@ public class ventanaEntrenamientoTarjetas extends AppCompatActivity {
     //imagina que crea 5 tarjetas y esas 5 las usa para ir mostrando los 50 ejercicos, es un ejemplo absurdo para explicarlo
     private static class TarjetasAdapter extends RecyclerView.Adapter<TarjetasAdapter.Holder> {
         //Detecta eventos pero no decide que hacer en ellos, por eso usmaos una interface
-        interface Eventos { void alEditar(EjercicioTarjeta ejercicio); void alElegirImagen(EjercicioTarjeta ejercicio); void alSolicitarReordenar(EjercicioTarjeta ejercicio); }
+        interface Eventos { void alEditar(EjercicioTarjeta ejercicio); void alElegirImagen(EjercicioTarjeta ejercicio); void alBorrarImagen(EjercicioTarjeta ejercicio); void alSolicitarReordenar(EjercicioTarjeta ejercicio); }
 
         private final List<EjercicioTarjeta> datos;
         private final Eventos eventos;
@@ -491,6 +519,8 @@ public class ventanaEntrenamientoTarjetas extends AppCompatActivity {
 
             //botones de cada tarjeta, al pintar una tarjeta concreta asignamos el comportamiento de sus botones
             h.imagenBoton.setOnClickListener(v -> eventos.alElegirImagen(ejercicio));
+            h.borrarImagen.setVisibility(ejercicio.rutaImagen == null ? View.GONE : View.VISIBLE);
+            h.borrarImagen.setOnClickListener(v -> eventos.alBorrarImagen(ejercicio));
             h.reordenar.setOnClickListener(v -> eventos.alSolicitarReordenar(ejercicio));
         }
 
@@ -501,7 +531,7 @@ public class ventanaEntrenamientoTarjetas extends AppCompatActivity {
 
         //Un Holder guarda referencias a las vistas de una tarjeta, asi no se llama repetidamente a findViewById cada vez que se reutiliza la tarjeta.
         class Holder extends RecyclerView.ViewHolder {
-            final TextView nombre, rm; final EditText series, repes, peso; final ImageView imagen; final Button imagenBoton, reordenar;
+            final TextView nombre, rm; final EditText series, repes, peso; final ImageView imagen; final Button imagenBoton, borrarImagen, reordenar;
             TextWatcher watcherSeries, watcherRepes, watcherPeso;
             Holder(View v) { super(v);
                 nombre=v.findViewById(R.id.tv_nombre_ejercicio);
@@ -511,6 +541,7 @@ public class ventanaEntrenamientoTarjetas extends AppCompatActivity {
                 peso=v.findViewById(R.id.et_peso_tarjeta);
                 imagen=v.findViewById(R.id.iv_ejercicio);
                 imagenBoton=v.findViewById(R.id.bt_imagen_ejercicio);
+                borrarImagen=v.findViewById(R.id.bt_borrar_imagen_ejercicio);
                 reordenar=v.findViewById(R.id.bt_reordenar_ejercicio); }
 
             //Este metodo fabrica un listener para cada campo editable. Actualiza primero el objeto que vive en memoria
