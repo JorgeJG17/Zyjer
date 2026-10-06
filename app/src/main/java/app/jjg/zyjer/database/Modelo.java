@@ -425,6 +425,28 @@ public class Modelo {
         }
     }
 
+    ///Elimina la asociacion de imagen de un ejercicio y el archivo privado que guardaba su contenido.
+    public int EliminarImagenEjercicio(Context context, int idEjercicio) {
+        SQLiteDatabase db = this.getConn(context);
+        String rutaImagen = null;
+
+        try (Cursor imagen = db.query("tlimagenes", new String[]{"ruta"}, "idejercicio = ?",
+                new String[]{String.valueOf(idEjercicio)}, null, null, null)) {
+            if (!imagen.moveToFirst()) return 0;
+            rutaImagen = imagen.getString(0);
+
+            if (db.delete("tlimagenes", "idejercicio = ?",
+                    new String[]{String.valueOf(idEjercicio)}) != 1) return 3333;
+        } catch (Exception e) {
+            return 3333;
+        } finally {
+            db.close();
+        }
+
+        if (rutaImagen != null) new File(rutaImagen).delete();
+        return 1;
+    }
+
     //Consulta para sacar el historial de pesaje
     public Cursor SeleccionarPesaje(Context context){
         SQLiteDatabase db = this.getConn(context);

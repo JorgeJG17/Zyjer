@@ -22,6 +22,15 @@
             android:scaleType="centerCrop"
             android:src="@android:drawable/ic_menu_gallery" />
         <Button android:id="@+id/bt_imagen_ejercicio" android:fontFamily="@font/departuremonoregular" android:background="@drawable/halloween_action_button"  app:backgroundTint="@null" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Elegir imagen" />
+        <Button
+            android:id="@+id/bt_borrar_imagen_ejercicio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/halloween_action_button"
+            android:fontFamily="@font/departuremonoregular"
+            android:text="Borrar imagen"
+            android:visibility="gone"
+            app:backgroundTint="@null" />
         <TextView android:id="@+id/tv_nombre_ejercicio" android:textColor="#f3f3f3" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:gravity="center" android:textSize="24sp" android:textStyle="bold" />
 
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:orientation="horizontal">
