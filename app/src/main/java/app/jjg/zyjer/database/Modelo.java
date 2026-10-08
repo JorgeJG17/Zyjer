@@ -22,7 +22,8 @@ import java.util.List;
 
 public class Modelo {
 
-    private static final int DB_VERSION = 14; //Si hacemos cambios en la base de datos, tablas nuevas, campos nuevos, sumamos uno
+    private static final int DB_VERSION = 15; //Si hacemos cambios en la base de datos, tablas nuevas, campos nuevos, sumamos uno
+    //estamos en la 15
 
     //Metodo que genera la base de datos, la llamara dbgym
     public SQLiteDatabase getConn(Context context){
@@ -400,13 +401,6 @@ public class Modelo {
                 "SELECT nombre FROM tlnombresdias WHERE idrutinas = ? AND dia = ?", args)) {
             if (guardado.moveToFirst()) {
                 nom_d = guardado.getString(0);
-            } else {
-                // Los nombres anteriores a la versión 14 siguen en nom_dia.
-                try (Cursor antiguo = db.rawQuery(
-                        "SELECT nom_dia FROM tlejercicios WHERE idrutinas = ? AND dia = ? AND nom_dia IS NOT NULL LIMIT 1",
-                        args)) {
-                    if (antiguo.moveToFirst()) nom_d = antiguo.getString(0);
-                }
             }
         }
         db.close();

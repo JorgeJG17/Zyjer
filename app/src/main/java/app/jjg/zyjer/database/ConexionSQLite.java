@@ -48,7 +48,6 @@ public class ConexionSQLite extends SQLiteOpenHelper {
         db.execSQL(TBL_EJE); //Tabla ejercicios
         db.execSQL(TBL_HIS); //Tabla Historial
         db.execSQL(TBL_PESAJE); //Tabla Pesaje
-        db.execSQL("ALTER TABLE tlejercicios ADD COLUMN nom_dia TEXT"); //Un nuevo campo para la tabla ejercicios
         db.execSQL("ALTER TABLE tlejercicios ADD COLUMN orden INTEGER"); //Un nuevo campo para la tabla ejecicios
         db.execSQL("ALTER TABLE tlejercicios ADD COLUMN dia_secundario INTEGER"); //Un nuevo campo para la tabla ejecicios
         db.execSQL("ALTER TABLE tlejercicios ADD COLUMN orden_secundario INTEGER"); //Orden propio del ejercicio en su dia secundario
