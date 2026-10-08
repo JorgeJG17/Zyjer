@@ -1,6 +1,6 @@
 /*
 Clase ventanaEntrenamientoTarjetas.java
-Fecha actualiza: 30/09/2026
+Fecha actualiza: 07/10/2026
 Autor: Jorge Jimenez Garrido
 Descripcion: Nueva ventana de entrenamiento basada en tarjetas. Recibe los mismos extras que ventanaRutEjerc: idRutina y dia.
 */
@@ -133,6 +133,8 @@ public class ventanaEntrenamientoTarjetas extends AppCompatActivity {
         findViewById(R.id.bt_historial_tarjetas).setOnClickListener(v -> abrirHistorial());
         findViewById(R.id.bt_eliminar_tarjetas).setOnClickListener(v -> confirmarEliminarActual());
         findViewById(R.id.bt_anadir_tarjetas).setOnClickListener(v -> mostrarDialogoAnadir());
+        findViewById(R.id.bt_copiar_tarjetas).setOnClickListener(v -> mostrarDialogoCopiar());
+        findViewById(R.id.bt_copiar_tarjetas).setEnabled(dia > 1);
     }
 
     //En este metodo cargamos los datos necesarios
@@ -227,7 +229,7 @@ public class ventanaEntrenamientoTarjetas extends AppCompatActivity {
         //actualiza el orden de todos los ejercicios, al mover uno, todos cambian
         for (int i = 0; i < ejercicios.size(); i++) {
             //llamada a la base de datos
-            if (modelo.ActualizarOrdenTabla(this, i + 1, ejercicios.get(i).id, idRutina) != 1) {
+            if (modelo.ActualizarOrdenTabla(this, i + 1, ejercicios.get(i).id, idRutina, dia) != 1) {
                 Toast.makeText(this, "No se pudo guardar el orden", Toast.LENGTH_SHORT).show();
                 cargarDeNuevo(); //cargamos de nuevo
                 return;
@@ -250,10 +252,10 @@ public class ventanaEntrenamientoTarjetas extends AppCompatActivity {
 
         //Sacamos un alert para conformar el borrado o cancelar
         new AlertDialog.Builder(this).setTitle("Eliminar ejercicio")
-                .setMessage("Se eliminará \"" + ejercicio.nombre + "\" y su imagen asociada.")
+                .setMessage("Se quitará \"" + ejercicio.nombre + "\" del día " + dia + ". Si está en otro día, se conservarán sus datos e imagen.")
                 .setPositiveButton("Eliminar", (dialog, which) -> {
                     //llamamos a la bd
-                    if (modelo.EliminarEjercicio(this, ejercicio.id) == 1) {
+                    if (modelo.EliminarEjercicio(this, ejercicio.id, dia) == 1) {
                         ejercicios.remove(posicion);//borramos esa posicion de la lista
                         adapter.notifyDataSetChanged(); //Le decimos al adaptador que las tarjetas han cambiado para que las vuelva a pintar
 
@@ -295,6 +297,29 @@ public class ventanaEntrenamientoTarjetas extends AppCompatActivity {
                     //Comprobamos que se ha insertado correctamente en la bd, si no, mostramos un mensaje
                     if (modelo.InsertaEjercicios(this, nuevo) == 1) cargarDeNuevo();
                     else Toast.makeText(this, "Revisa los datos del ejercicio", Toast.LENGTH_SHORT).show();
+                }).setNegativeButton("Cancelar", null).show();
+    }
+
+    private void mostrarDialogoCopiar() {
+        List<Integer> ids = new ArrayList<>();
+        List<String> opciones = new ArrayList<>();
+        try (Cursor anteriores = modelo.SeleccionarEjerciciosAnteriores(this, idRutina, dia)) {
+            while (anteriores.moveToNext()) {
+                ids.add(anteriores.getInt(0));
+                opciones.add("Día " + anteriores.getInt(2) + " · " + anteriores.getString(1));
+            }
+        }
+        //Si ids esta vacio significa que SeleccionarEjerciciosAnteriores no ha traido nada, eso puede ser porque no existan,
+        //o esten ya ocupados en otros dos dias y no se puede poner en un tercero
+        if (ids.isEmpty()) {
+            Toast.makeText(this, "No hay ejercicios anteriores disponibles", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        new AlertDialog.Builder(this).setTitle("Añadir ejercicio anterior")
+                .setItems(opciones.toArray(new String[0]), (dialogo, indice) -> {
+                    int resultado = modelo.CompartirEjercicio(this, idRutina, ids.get(indice), dia);
+                    if (resultado == 1) cargarDeNuevo();
+                    else Toast.makeText(this, "No se pudo añadir el ejercicio", Toast.LENGTH_SHORT).show();
                 }).setNegativeButton("Cancelar", null).show();
     }
 

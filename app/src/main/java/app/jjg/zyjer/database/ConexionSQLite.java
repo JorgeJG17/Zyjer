@@ -1,6 +1,6 @@
 /*
 Clase CaonexionSQLite.java
-Fecha actualiza: 30/09/2026
+Fecha actualiza: 07/10/2026
 Autor: Jorge Jimenez Garrido
 Descripcion: Clase para relizar la conexion de a la bd local desde la Modelo.java
 aqui tenemos las tablas y un metodo para ejecutar script al inicar la app, y un control de version de la app que tiene la bd del movil
@@ -27,10 +27,11 @@ import java.io.InputStreamReader;
 public class ConexionSQLite extends SQLiteOpenHelper {
     //TABLAS
     final String TBL_USR = "CREATE TABLE tlrutinas (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT UNIQUE, dias INTEGER)"; //tabla de la rutinas
-    final String TBL_EJE = "CREATE TABLE tlejercicios (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, dia INTEGER, idrutinas INTEGER, series INTEGER, repes INTEGER, peso INTEGER)"; //tablas de los ejercicios
+    final String TBL_EJE = "CREATE TABLE tlejercicios (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, dia INTEGER NOT NULL, idrutinas INTEGER, series INTEGER, repes INTEGER, peso INTEGER)"; //tablas de los ejercicios
     final String TBL_HIS = "CREATE TABLE tlhistorial (id INTEGER PRIMARY KEY AUTOINCREMENT, idejercicio INTEGER, repes INTEGER, peso INTEGER, date TEXT)";
     final String TBL_PESAJE = "CREATE TABLE tlpesaje (id INTEGER PRIMARY KEY AUTOINCREMENT, peso INTEGER, date TEXT)";
     final String TBL_CALENDAR = "CREATE TABLE tlcalendar (id INTEGER PRIMARY KEY AUTOINCREMENT,date TEXT UNIQUE,estado INTEGER)";
+    final String TBL_NOMBRES_DIAS = "CREATE TABLE tlnombresdias (idrutinas INTEGER NOT NULL, dia INTEGER NOT NULL, nombre TEXT, PRIMARY KEY (idrutinas, dia))";
     // Solo se persiste la ruta privada del archivo, nunca los bytes de la imagen dentro de SQLite.
     final String TBL_IMAGENES = "CREATE TABLE tlimagenes (idejercicio INTEGER NOT NULL UNIQUE, ruta TEXT NOT NULL UNIQUE, PRIMARY KEY (idejercicio, ruta))";
     //final String TBL_MET = "CREATE TABLE tleventos (id INTEGER PRIMARY KEY AUTOINCREMENT, codigo TEXT UNIQUE,nombre TEXT, fechaini TEXT, fechafin TEXT, dias INTEGER, hiper TEXT, perder TEXT, fuerza TEXT, salud TEXT, toni TEXT)";
@@ -47,9 +48,11 @@ public class ConexionSQLite extends SQLiteOpenHelper {
         db.execSQL(TBL_EJE); //Tabla ejercicios
         db.execSQL(TBL_HIS); //Tabla Historial
         db.execSQL(TBL_PESAJE); //Tabla Pesaje
-        db.execSQL("ALTER TABLE tlejercicios ADD COLUMN nom_dia TEXT"); //Un nuevo campo para la tabla ejercicios
         db.execSQL("ALTER TABLE tlejercicios ADD COLUMN orden INTEGER"); //Un nuevo campo para la tabla ejecicios
+        db.execSQL("ALTER TABLE tlejercicios ADD COLUMN dia_secundario INTEGER"); //Un nuevo campo para la tabla ejecicios
+        db.execSQL("ALTER TABLE tlejercicios ADD COLUMN orden_secundario INTEGER"); //Orden propio del ejercicio en su dia secundario
         db.execSQL(TBL_CALENDAR); //Tabla Calendario
+        db.execSQL(TBL_NOMBRES_DIAS); //Tabla Nombres_Dias
         db.execSQL(TBL_IMAGENES); //Tabla de imagenes de ejercicios
     }
 

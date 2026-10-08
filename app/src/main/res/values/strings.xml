@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">ZyJer</string>
+    <string name="crear_rutina_titulo">Creador de rutinas</string>
+    <string name="crear_rutina_intro">Primero define tu rutina. Después podrás añadir ejercicios y repetirlos en otros días.</string>
+    <string name="crear_rutina_nombre">Nombre de la rutina</string>
+    <string name="crear_rutina_nombre_ejemplo">Ej. Fuerza semanal</string>
+    <string name="crear_rutina_dias">Número de días</string>
+    <string name="crear_rutina_dias_ejemplo">Ej. 4</string>
+    <string name="crear_rutina_ayuda">Podrás organizar los ejercicios de cada día en el siguiente paso.</string>
+    <string name="crear_rutina_continuar">Crear y continuar</string>
+    <string name="crear_ejercicios_ayuda">Añade ejercicios o enlaza los de un día anterior.</string>
+    <string name="copiar_dia">Copiar día</string>
+    <string name="copiar_ejercicio">Copiar ejercicio</string>
+    <string name="copiar_ejercicio_anterior">Añadir de un día anterior</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>

@@ -1,3 +1,4 @@
+/*Ventana que no se esta llamando actulmente*/
 package app.jjg.zyjer.ventanasentrenar;
 
 import android.content.ClipData;
@@ -104,7 +105,7 @@ public class ventanaRutEjerc extends AppCompatActivity {
                     if (modoEliminar) {
                         // Eliminar la fila completa
 
-                        int respuesta = obj.EliminarEjercicio(ventanaRutEjerc.this,textViewNombre.getId());
+                        int respuesta = obj.EliminarEjercicio(ventanaRutEjerc.this,textViewNombre.getId(), d);
 
                         if(respuesta == 1){
                             Toast.makeText(ventanaRutEjerc.this, "Ok", Toast.LENGTH_SHORT).show();
@@ -351,7 +352,7 @@ public class ventanaRutEjerc extends AppCompatActivity {
             int id = row.getChildAt(0).getId();
 
 
-            int resultados = obj.ActualizarOrdenTabla(ventanaRutEjerc.this,i,id,idRutina);
+            int resultados = obj.ActualizarOrdenTabla(ventanaRutEjerc.this,i,id,idRutina,dia);
 
             //Si se ha actualizado correctamente devolvera 1
             if(resultados == 1){
