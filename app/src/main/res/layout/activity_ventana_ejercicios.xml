@@ -1,253 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/halloween_screen_background"
-    tools:context=".ventanascrear.ventanaEjercicios">
-
-    <!--<Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="finDiaClick"
-        android:text="Fin del día"
-        android:fontFamily="@font/departuremonoregular"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.808"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.881" />-->
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="149dp"
-        android:layout_height="35dp"
-        android:background="@drawable/halloween_action_button"
-        android:fontFamily="@font/departuremonoregular"
-        android:onClick="finDiaClick"
-        android:text="Fin del día"
-        android:textSize="12sp"
-        app:backgroundTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.808"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.881"
-        tools:ignore="MissingConstraints" />
-
-    <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="396dp"
-        android:layout_height="527dp"
-        android:background="#292929"
-        android:padding="0dp"
-        android:showDividers="middle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.367"
-        tools:ignore="MissingConstraints">
-
-        <!-- Cabecera de la tabla con los títulos de las columnas -->
-        <TableRow>
-
-            <TextView
-                android:layout_width="158dp"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:divider="?android:attr/dividerHorizontal"
-                android:padding="8dp"
-                android:text="Nombre"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="Series"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="Repes"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text=" Peso"
-                android:textStyle="bold" />
-
-            <!-- Nueva columna Version //TASK: 13-->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="Ejer.Libre"
-                android:textStyle="bold" />
-        </TableRow>
-
-
-    </TableLayout>
+    android:background="@drawable/halloween_screen_background">
 
     <TextView
         android:id="@+id/textView5"
-        android:layout_width="53dp"
-        android:layout_height="26dp"
-        android:fontFamily="@font/departuremonoregular"
-        android:text="Día: "
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.046"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.059" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="93dp"
-        android:layout_height="23dp"
-        android:fontFamily="@font/departuremonoregular"
-        android:text="Nombre: "
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.564"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.059" />
-
-    <!--<Button
-        android:id="@+id/new_fila"
-        android:layout_width="150dp"
-        android:layout_height="38dp"
-        android:fontFamily="@font/departuremonoregular"
-        android:onClick="new_fila_click"
-        android:text="+ ejercicio"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.126"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.868"
-        tools:ignore="MissingConstraints" />-->
-
-    <Button
-        android:id="@+id/new_fila"
-        android:layout_width="150dp"
-        android:layout_height="38dp"
-        android:background="@drawable/halloween_action_button"
-        android:fontFamily="@font/departuremonoregular"
-        android:onClick="new_fila_click"
-        android:text="+ ejercicio"
-        android:textSize="12sp"
-        app:backgroundTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.126"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.868"
-        tools:ignore="MissingConstraints" />
-    <!--TASK 11-->
-    <!--<Button
-        android:id="@+id/new_fila2"
-        android:layout_width="150dp"
-        android:layout_height="38dp"
-        android:fontFamily="@font/departuremonoregular"
-        android:onClick="clear_fila_click"
-        android:text="- ejercicio"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.126"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.923"
-        tools:ignore="MissingConstraints" />-->
-
-    <Button
-        android:id="@+id/new_fila2"
-        android:layout_width="150dp"
-        android:layout_height="38dp"
-        android:background="@drawable/halloween_action_button"
-        android:fontFamily="@font/departuremonoregular"
-        android:onClick="clear_fila_click"
-        android:text="- ejercicio"
-        android:textSize="12sp"
-        app:backgroundTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.126"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.923"
-        tools:ignore="MissingConstraints"  />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="300dp"
-        android:layout_height="20dp"
-        android:fontFamily="@font/departuremonoregular"
-        android:text="Creado por: Jorge Jiménez Garrido"
-        android:textColor="#FFFFFF"
-        android:textColorLink="#000000"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.036"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.953" />
-
-    <TextView
-        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/departuremonoregular"
-        android:text="Versión: 2.0Beta"
-        android:textColor="#FFFFFF"
-        android:textColorLink="#000000"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.014"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.977" />
+        android:text="Día:"
+        android:textColor="#FFAA32"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/ndia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:fontFamily="@font/departuremonoregular"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.184"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.059" />
+        android:textSize="22sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/textView5"
+        app:layout_constraintStart_toEndOf="@id/textView5" />
 
+    <TextView
+        android:id="@+id/tv_instrucciones_creacion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/crear_ejercicios_ayuda"
+        android:textColor="#E9DDEB"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView5" />
+
+    <ScrollView
+        android:id="@+id/scroll_ejercicios"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="#D924142B"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/acciones_creacion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_instrucciones_creacion">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:scrollbars="horizontal">
+
+            <TableLayout
+                android:id="@+id/tableLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:showDividers="middle">
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:background="#FFAA32"
+                        android:padding="8dp"
+                        android:text="Nombre"
+                        android:textColor="#201022"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="64dp"
+                        android:layout_height="wrap_content"
+                        android:background="#FFAA32"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="Series"
+                        android:textColor="#201022"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="64dp"
+                        android:layout_height="wrap_content"
+                        android:background="#FFAA32"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="Repes"
+                        android:textColor="#201022"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="64dp"
+                        android:layout_height="wrap_content"
+                        android:background="#FFAA32"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="Peso"
+                        android:textColor="#201022"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:background="#FFAA32"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="Libre"
+                        android:textColor="#201022"
+                        android:textStyle="bold" />
+                </TableRow>
+            </TableLayout>
+        </HorizontalScrollView>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/acciones_creacion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/new_fila"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@drawable/halloween_action_button"
+                android:fontFamily="@font/departuremonoregular"
+                android:onClick="new_fila_click"
+                android:text="+ ejercicio"
+                android:textSize="12sp"
+                app:backgroundTint="@null" />
+            <Button
+                android:id="@+id/new_fila2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@drawable/halloween_action_button"
+                android:fontFamily="@font/departuremonoregular"
+                android:onClick="clear_fila_click"
+                android:text="- ejercicio"
+                android:textSize="12sp"
+                app:backgroundTint="@null" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/bt_copiar_dia"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@drawable/halloween_action_button"
+                android:fontFamily="@font/departuremonoregular"
+                android:onClick="copiarDiaClick"
+                android:text="@string/copiar_dia"
+                android:textSize="12sp"
+                app:backgroundTint="@null" />
+            <Button
+                android:id="@+id/bt_copiar_ejercicio"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@drawable/halloween_action_button"
+                android:fontFamily="@font/departuremonoregular"
+                android:onClick="copiarEjercicioClick"
+                android:text="@string/copiar_ejercicio"
+                android:textSize="12sp"
+                app:backgroundTint="@null" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/halloween_action_button"
+            android:fontFamily="@font/departuremonoregular"
+            android:onClick="finDiaClick"
+            android:text="Finalizar día"
+            android:textSize="15sp"
+            app:backgroundTint="@null" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

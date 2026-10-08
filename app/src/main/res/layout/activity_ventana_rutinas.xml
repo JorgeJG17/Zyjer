@@ -1,155 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/halloween_screen_background"
-    tools:context=".ventanascrear.ventanaRutinas">
+    android:background="@drawable/halloween_screen_background">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="300dp"
-        android:layout_height="20dp"
-        android:fontFamily="@font/departuremonoregular"
-        android:text="Creado por: Jorge Jiménez Garrido"
-        android:textColor="#FFFFFF"
-        android:textColorLink="#000000"
-        android:textSize="13sp"
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.036"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.953" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/departuremonoregular"
-        android:text="Versión: 2.0"
-        android:textColor="#FFFFFF"
-        android:textColorLink="#000000"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.014"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.977" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="24dp">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="327dp"
-        android:layout_height="43dp"
-        android:fontFamily="@font/departuremonoregular"
-        android:text="Creador de Rutinas"
-        android:textColor="#FFAA32"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.104"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.069" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/departuremonoregular"
+                android:text="@string/crear_rutina_titulo"
+                android:textColor="#FFAA32"
+                android:textSize="28sp"
+                android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="204dp"
-        android:layout_height="26dp"
-        android:fontFamily="@font/departuremonoregular"
-        android:textColor="#FFFFFF"
-        android:text="Nombre Rutina: "
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.02"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.27" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/crear_rutina_intro"
+                android:textColor="#E9DDEB"
+                android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="192dp"
-        android:layout_height="28dp"
-        android:fontFamily="@font/departuremonoregular"
-        android:textColor="#FFFFFF"
-        android:text="Número de días: "
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.025"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.361" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:background="#D924142B"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-    <!--textCapSentences Pone la primera en mayuscula  //TASK 10-->
-    <EditText
-        android:id="@+id/textNombre"
-        android:layout_width="128dp"
-        android:layout_height="51dp"
-        android:ems="10"
-        android:inputType="textCapSentences"
-        android:textColor="#FFFFFF"
-        android:text=""
-        android:gravity="center"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.734"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.263" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/departuremonoregular"
+                    android:text="@string/crear_rutina_nombre"
+                    android:textColor="#FFAA32"
+                    android:textSize="17sp" />
 
-    <EditText
-        android:id="@+id/textDias"
-        android:layout_width="47dp"
-        android:layout_height="50dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text="0"
-        android:gravity="center"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.541"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.356" />
+                <EditText
+                    android:id="@+id/textNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/crear_rutina_nombre_ejemplo"
+                    android:inputType="textCapSentences"
+                    android:maxLines="1"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#BBAEC0" />
 
-    <!--<Button
-        android:id="@+id/btSiguienteRut"
-        android:layout_width="170dp"
-        android:layout_height="58dp"
-        android:fontFamily="@font/departuremonoregular"
-        android:onClick="crearRutClick"
-        android:text="Siguiente"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.472" />-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/departuremonoregular"
+                    android:text="@string/crear_rutina_dias"
+                    android:textColor="#FFAA32"
+                    android:textSize="17sp" />
 
-    <Button
-        android:id="@+id/btSiguienteRut"
-        android:layout_width="170dp"
-        android:layout_height="58dp"
-        android:background="@drawable/halloween_action_button"
-        android:fontFamily="@font/departuremonoregular"
-        android:onClick="crearRutClick"
-        android:text="Siguiente"
-        app:backgroundTint="@null"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.472" />
+                <EditText
+                    android:id="@+id/textDias"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/crear_rutina_dias_ejemplo"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#BBAEC0" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/crear_rutina_ayuda"
+                    android:textColor="#D4C6D6"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btSiguienteRut"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="28dp"
+                android:background="@drawable/halloween_action_button"
+                android:fontFamily="@font/departuremonoregular"
+                android:onClick="crearRutClick"
+                android:text="@string/crear_rutina_continuar"
+                android:textSize="17sp"
+                app:backgroundTint="@null" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="Creado por: Jorge Jiménez Garrido\nVersión: 2.0"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

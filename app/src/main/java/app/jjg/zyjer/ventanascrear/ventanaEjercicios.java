@@ -1,12 +1,19 @@
+/*
+Clase ventanaEjercicios.java
+Fecha actualiza: 07/10/2026
+Autor: Jorge Jimenez Garrido
+Descripcion: Desde esta pantalla podemos crear nuestros ejercicios de la rutina creada
+*/
 package app.jjg.zyjer.ventanascrear;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -19,6 +26,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import app.jjg.zyjer.R;
 import app.jjg.zyjer.database.EjerciciosTL;
 import app.jjg.zyjer.database.Modelo;
@@ -31,228 +42,269 @@ public class ventanaEjercicios extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_ventana_ejercicios);
+        idRutina = getIntent().getIntExtra("idRutina", -1);
+        totalDias = getIntent().getIntExtra("sdias", -1);
+        if (idRutina < 1 || totalDias < 1) {
+            finish();
+            return;
+        }
 
-        //Recuperar datos enviados desde la otra pantalla
-        Intent intent = getIntent();
-        idRutina = intent.getIntExtra("idRutina", -1); //idrutina
-        sdias = intent.getIntExtra("sdias", -1); // Los dias que tiene la rutina en total
+        //tabla y bt
+        tabla = findViewById(R.id.tableLayout);
+        etiquetaDia = findViewById(R.id.ndia);
+        copiarDia = findViewById(R.id.bt_copiar_dia);
+        copiarEjercicio = findViewById(R.id.bt_copiar_ejercicio);
 
-        nactDia = findViewById(R.id.ndia);
-        nactDia.setText(Integer.toString(actDia)); //Pintamos el dia 1
-        iniciar(); //llamamos al metodo iniciar
-
+        mostrarDia();
+        nuevaFila();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            Insets barras = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(barras.left, barras.top, barras.right, barras.bottom);
             return insets;
         });
     }
 
-    public void iniciar(){
-        tableLayout = findViewById(R.id.tableLayout); //Creamos nuestra tabla
-        New_fila_Tabla();//cargamos una fila al inciar
+    //Mostramos el dia en el que estamos annadiendo ejercicios y el total de dias de la rutin creada
+    private void mostrarDia() {
+        etiquetaDia.setText(diaActual + " de " + totalDias);
+        copiarDia.setEnabled(diaActual > 1);
+        copiarEjercicio.setEnabled(diaActual > 1);
     }
 
-    public void new_fila_click(View view){ //Boton de una fila más
-
-        New_fila_Tabla(); ////cargamos una fila más
+    //metodo del bt para añadir un ejercicio
+    public void new_fila_click(View view) {
+        nuevaFila();
     }
 
-    //TASK 11 //Poder borrar la ultima fila
-    public void clear_fila_click(View view){
-
-        // Verifica que hay al menos dos filas de ejercicios, recordar que los titulos ya es una fila
-        int rowCount = tableLayout.getChildCount();
-        if (rowCount > 2) {
-            tableLayout.removeViewAt(rowCount - 1); // Borra la última fila, recordar que hay que ponerle -1 porqe tenemos el numero de filas totales pero se cuentan de 0,1,2... como las arrays
-        }
-    }
-
-    //Metodo que cogera todos los ejercicios de la tabla y se los enviara uno a uno al metodo para insertar en la db
-    public void crearEjer(){
-
-        int n_filas_t = tableLayout.getChildCount(); //Este metodo de vuelve el numero de filas totales, contando la principal que es la de los titulos
-
-        //Lo pongo a 1 para saltarme los titulos
-        for(int i = 1; i< n_filas_t; i++){
-
-            TableRow tablaEjerc = (TableRow) tableLayout.getChildAt(i);
-
-            EditText arrayCampos[] = new EditText[4];
-            arrayCampos[0] = (EditText) tablaEjerc.getChildAt(0);
-            arrayCampos[1] = (EditText) tablaEjerc.getChildAt(1);
-            arrayCampos[2] = (EditText) tablaEjerc.getChildAt(2);
-            arrayCampos[3] = (EditText) tablaEjerc.getChildAt(3);
-
-            String valoresCampos[] = new String[4];
-            valoresCampos[0] = arrayCampos[0].getText().toString();
-            valoresCampos[1] = arrayCampos[1].getText().toString();
-            valoresCampos[2] = arrayCampos[2].getText().toString();
-            valoresCampos[3] = arrayCampos[3].getText().toString();
-
-
-            insertDB(valoresCampos); //enviamos los datos en un array para insertarlos en la db
-        }
-
-
-    }
-
-    //metodo para insertar los ejercicios en la db
-    public void insertDB(String valores[]){
-
-        Modelo obj = new Modelo(); //Nos conectamos a la bd
-        EjerciciosTL eje = new EjerciciosTL(); //Un objeto de tipo Ejercicios que le envairemos a la consulta de la db para guardar los datos en el y recuperarlos alli
-
-        //Habilitar el poder introducir al fallo en algun ejercicio
-        //if()
-
-
-        eje.setIdRutina(Integer.toString(idRutina)); //idRutina sacado de la bd
-        eje.setDia(Integer.toString(actDia)); //actdia metemos el dia actual al que se le esta rellenado los ejercicios
-        eje.setNombre(valores[0]);
-        eje.setSeries(valores[1]);
-        eje.setRepes(valores[2]);
-        eje.setPeso(valores[3]); //Si pulso el check metera un -1 porque no usara el peso en ese ejercicio
-
-        int resInsert = obj.InsertaEjercicios(ventanaEjercicios.this,eje); //Insertar ejercicios
-
-
-        //Si se ha insertado correctamente devolvera 1
-        if(resInsert == 1){
-
-            contador++;//el contador que llevara las que se han insertado correctamente
-            if(contador == tableLayout.getChildCount()) { //Cuando se hayan insertados todas
-
-                Toast.makeText(ventanaEjercicios.this, "Ok", Toast.LENGTH_SHORT).show();
-
-                //Borramos la tabla menos la cebecera
-                int childCount = tableLayout.getChildCount();
-                if (childCount > 1) {
-                    tableLayout.removeViews(1, childCount - 1);
-                }
-
-                contador = 1; //Reiniciamos el contador al incio de nuevo
-                New_fila_Tabla();//Volvemos a llamar para que pinte una fila
-
-
+    //metodo del bt para borrar un ejercicio
+    public void clear_fila_click(View view) {
+        for (int i = tabla.getChildCount() - 1; i > 0; i--) {
+            TableRow fila = (TableRow) tabla.getChildAt(i);
+            if (fila.getTag() == null) {
+                tabla.removeViewAt(i);
+                return;
             }
-            //Intent intent = new Intent(this, ventanaEjercicios.class);
-            //startActivity(intent);
-        } else{
-            new AlertDialog.Builder(this)
-                    .setTitle("Error")
-                    .setMessage("¡Ups! Algo salió mal. Por favor, infórmaselo al desarrollador. Recuerda que esta es una versión Alpha.")
-                    .setPositiveButton("OK", null)
-                    .show();
-            //Toast.makeText(ventanaEjercicios.this, "¡Ups! Algo salió mal. Por favor, infórmaselo al desarrollador. Recuerda que esta es una versión Alfa.", Toast.LENGTH_SHORT).show();
         }
+        Toast.makeText(this, "No hay filas nuevas para quitar", Toast.LENGTH_SHORT).show();
     }
 
-    //Metodo del bt Finalizar dia
-    public void finDiaClick(View view){
+    //Metodo para copiar un dia entero anteror ya rellenado, por ejemplo copiar el dia 1 en el 3
+    public void copiarDiaClick(View view) {
+        //para usar esto obviamente debemos de tener minimo un dia completo ya creado
+        if (diaActual <= 1) return;
 
-        crearEjer(); //Crear ejercicio y insertarlo en db
-        CambiarDia(); //Cambianmos de dia
+        //Las opciones van a depender de cuantos dias llevamos creados en el momento
+        String[] opciones = new String[diaActual - 1];
 
-        if(actDia != -10){ //si dia es diferente a a -10 entoces continuamos
+        //rellenamos las opciones
+        for (int i = 0; i < opciones.length; i++) opciones[i] = "Día " + (i + 1);
 
-            nactDia.setText(Integer.toString(actDia)); //pintamos el nueco da
+        //sacamos el alert
+        new AlertDialog.Builder(this).setTitle("Copiar un día anterior")
+                .setItems(opciones, (dialogo, indice) -> {
+                    //llamamos a CompartirDia
+                    int resultado = modelo.CompartirDia(this, idRutina, indice + 1, diaActual);
 
-        }else{ // si es -10 significa que ya no hay mas días
-
-            //Una vez es el ultimo día y se pulsa finalizar, se llama a la ventana principal //TASK 7 Como hemos cambiado de principal pues llamamos a la nueva!
-            Intent intent = new Intent(this, ventana_entrenar.class);
-            startActivity(intent);
-        }
+                    //Segun el resultado tenemos varios errores controlados
+                    if (resultado == 1) {
+                        cargarCompartidos(); //llamamos para cargar la tabla nueva
+                        Toast.makeText(this, "Día compartido", Toast.LENGTH_SHORT).show();
+                    } else if (resultado == 2) {
+                        aviso("Este día ya contiene ejercicios guardados.");
+                    } else if (resultado == 3) {
+                        aviso("Algún ejercicio ya pertenece a dos días. Copia los demás por separado.");
+                    } else if (resultado == 4) {
+                        aviso("El día elegido no contiene ejercicios.");
+                    } else {
+                        aviso("No se pudo copiar el día.");
+                    }
+                }).setNegativeButton("Cancelar", null).show();
     }
 
-    //Metodo para que cambie de dia y si ya a completado todos los dias ponemos el valor en negativo para controlar que ya ha rellenado la rutina entera
-    private void CambiarDia(){
-        if(actDia < sdias){
-            actDia++;
-        }
-        else{
-            actDia = -10;
-        }
-    }
+    //Metodo para copiar un ejercicio anterior de un dia ya rellenado, por ejemplo copiar el ejercicio x del dia 1 en el dia 3
+    public void copiarEjercicioClick(View view) {
+        //para usar esto obviamente debemos de tener minimo un dia completo ya creado
+        if (diaActual <= 1) return;
 
-    //Metodo para pintar una nueva fila vacía
-    private void New_fila_Tabla() {
-        TableRow tablaEjerc= new TableRow(this);
+        List<Integer> ids = new ArrayList<>();
+        List<String> opciones = new ArrayList<>();
 
-        EditText textViewNombre = new EditText(this);
-        textViewNombre.setText("");
-        textViewNombre.setBackgroundResource(R.drawable.border_tabla);
-        textViewNombre.setPadding(8, 10, 8, 10);
-        textViewNombre.setSingleLine(true);
-        textViewNombre.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES); //TASK 10 Que ponga la primera en mayuscula
-
-        EditText textViewSeries = new EditText(this);
-        textViewSeries.setText("");
-        textViewSeries.setBackgroundResource(R.drawable.border_tabla);
-        textViewSeries.setPadding(8, 10, 8, 10);
-        textViewSeries.setSingleLine(true);
-        textViewSeries.setGravity(Gravity.CENTER);
-        textViewSeries.setInputType(InputType.TYPE_CLASS_NUMBER); //TASK 10 Se le pone que abrir el teclado numerico
-
-        EditText textViewRepes = new EditText(this);
-        textViewRepes.setText("");
-        textViewRepes.setBackgroundResource(R.drawable.border_tabla);
-        textViewRepes.setPadding(8, 10, 8, 10);
-        textViewRepes.setSingleLine(true);
-        textViewRepes.setGravity(Gravity.CENTER);
-        textViewRepes.setInputType(InputType.TYPE_CLASS_NUMBER); //TASK 10 Se le pone para abrir el teclado numerico
-
-        EditText textViewPeso = new EditText(this);
-        textViewPeso.setText("");
-        textViewPeso.setBackgroundResource(R.drawable.border_tabla); //Le metemos los colores bordes, especificados en border_tabla.xml
-        textViewPeso.setPadding(8, 10, 8, 10); //La cantidad de px de la caja
-        textViewPeso.setSingleLine(true);  //Limita el texto por si llega largo que la celda no se modifique
-        textViewPeso.setGravity(Gravity.CENTER);
-        textViewPeso.setInputType(InputType.TYPE_CLASS_NUMBER); //TASK 10 Se le pone que abrir el teclado numerico
-
-        //Añadimos un check que si se pulsa, significa que ese ejercicio es libre, es decir, sin peso
-        //TASK: 13
-        CheckBox checkFallo = new CheckBox(this);
-        checkFallo.setPadding(8, 8, 8, 8); //La cantidad de px de la caja, los cambios de aquí no afectan
-        /*TableRow.LayoutParams params = new TableRow.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-        params.setMargins(1, 1, 1, 1);*/ // No funciona, sigue saliendo un border arriba que nose como arreglarlo
-        //checkFallo.setLayoutParams(params);
-        checkFallo.setBackgroundResource(R.drawable.border_tabla);
-        checkFallo.setGravity(Gravity.CENTER);
-
-
-        checkFallo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                textViewPeso.setEnabled(!isChecked);
-                    if(!isChecked){
-                        textViewPeso.setText("");
-                    } else textViewPeso.setText("-1");
+        //Sacamos ejercicicios anteriores de los dias ya creados, demomento solo podemos tener un mismo ejercicio en un maximo de dos dias
+        try (Cursor anteriores = modelo.SeleccionarEjerciciosAnteriores(this, idRutina, diaActual)) {
+            while (anteriores.moveToNext()) {
+                ids.add(anteriores.getInt(0));
+                opciones.add("Día " + anteriores.getInt(2) + " · " + anteriores.getString(1));
             }
+        }
+        if (ids.isEmpty()) {
+            aviso("No hay ejercicios anteriores disponibles para compartir.");
+            return;
+        }
+        //Mostramos el alert con las opciones
+        new AlertDialog.Builder(this).setTitle("Copiar ejercicio")
+                .setItems(opciones.toArray(new String[0]), (dialogo, indice) -> {
+                    int resultado = modelo.CompartirEjercicio(this, idRutina, ids.get(indice), diaActual);
+                    if (resultado == 1) cargarCompartidos(); //llamamos para cargar la tabla nueva
+                    else if (resultado == 2) aviso("Ese ejercicio ya está en este día.");
+                    else aviso("No se pudo compartir el ejercicio.");
+                }).setNegativeButton("Cancelar", null).show();
+    }
+
+    //Si se han compartod correcatmente los nuevos ejercicos o un ejercicio concreto, lo mostramos en pantalla en la tabla
+    private void cargarCompartidos() {
+        //Antes de cargar nada, eliminamos las filas compartidas que ya estuvieran visibles
+        for (int i = tabla.getChildCount() - 1; i > 0; i--) {
+            if (FILA_COMPARTIDA.equals(tabla.getChildAt(i).getTag())) tabla.removeViewAt(i);
+        }
+
+        //Consultamos los ejercicios de la rutina, porque en algunos que ya estan insertados, se ha puesto dia secundario al compartir
+        //dia_secundario = actual
+        try (Cursor ejercicios = modelo.SeleccionarEjercicos(this, idRutina, diaActual)) {
+            while (ejercicios.moveToNext()) {
+                TableRow fila = new TableRow(this);
+                fila.setTag(FILA_COMPARTIDA); //Rellenamos el tag para saber despues que ejercico es compartido y cual nuevo, porque los compartidos no se insertan
+                fila.addView(celda(ejercicios.getString(1), 160));
+                fila.addView(celda(ejercicios.getString(2), 64));
+                fila.addView(celda(ejercicios.getString(3), 64));
+                fila.addView(celda(ejercicios.getString(4), 64));
+
+                //Una marca, que indica que es un ejercicio ya guardado y compartido.
+                fila.addView(celda("✓", 80));
+
+                //Insertamos la fila en la posicion 1, justo debajo de la cabecera. Por eso los ejercicios compartidos aparecen arriba y las filas nuevas editables quedan debajo.
+                tabla.addView(fila, 1);
+            }
+        }
+    }
+
+    private TextView celda(String texto, int anchoDp) {
+        TextView vista = new TextView(this);
+        vista.setText(texto);
+        vista.setTextColor(0xFFFFFFFF);
+        vista.setBackgroundResource(R.drawable.border_tabla);
+        vista.setGravity(Gravity.CENTER_VERTICAL);
+        vista.setPadding(8, 8, 8, 8);
+        vista.setLayoutParams(new TableRow.LayoutParams((int) (anchoDp * getResources().getDisplayMetrics().density),
+                TableRow.LayoutParams.WRAP_CONTENT));
+        return vista;
+    }
+
+    //Metodo del bt finalizar dia
+    public void finDiaClick(View view) {
+        //Comprobamos que este correctamente cad ejercicio
+        for (int i = 1; i < tabla.getChildCount(); i++) {
+            TableRow fila = (TableRow) tabla.getChildAt(i);
+            if (fila.getTag() != null) continue; //Si esta relleno, se salta el codigo y pasamos a la siguiente fila, significa que es compartida
+            EditText nombre = (EditText) fila.getChildAt(0);
+            EditText series = (EditText) fila.getChildAt(1);
+            EditText repes = (EditText) fila.getChildAt(2);
+            EditText peso = (EditText) fila.getChildAt(3);
+            String n = nombre.getText().toString().trim();
+            String s = series.getText().toString().trim();
+            String r = repes.getText().toString().trim();
+            String p = peso.getText().toString().trim();
+            if (n.isEmpty() && s.isEmpty() && r.isEmpty() && p.isEmpty()) continue;
+            if (n.isEmpty() || !positivo(s) || !positivo(r) || !numeroPeso(p)) {
+                aviso("Completa nombre, series, repeticiones y peso de cada ejercicio.");
+                nombre.requestFocus();
+                return;
+            }
+        }
+
+        //Guardamos los ejercicios en un objeto EjerciciosTL
+        for (int i = 1; i < tabla.getChildCount(); i++) {
+            TableRow fila = (TableRow) tabla.getChildAt(i);
+            if (fila.getTag() != null) continue; //Si esta relleno, se salta el codigo y pasamos a la siguiente fila, significa que es compartida
+            EditText nombre = (EditText) fila.getChildAt(0);
+            if (nombre.getText().toString().trim().isEmpty()) continue;
+            EjerciciosTL ejercicio = new EjerciciosTL();
+            ejercicio.setIdRutina(String.valueOf(idRutina));
+            ejercicio.setDia(String.valueOf(diaActual));
+            ejercicio.setNombre(nombre.getText().toString().trim());
+            ejercicio.setSeries(((EditText) fila.getChildAt(1)).getText().toString().trim());
+            ejercicio.setRepes(((EditText) fila.getChildAt(2)).getText().toString().trim());
+            ejercicio.setPeso(((EditText) fila.getChildAt(3)).getText().toString().trim());
+            //Insertamos los ejercicios en la bd
+            if (modelo.InsertaEjercicios(this, ejercicio) != 1) {
+                aviso("No se pudo guardar un ejercicio. Revisa la tabla e inténtalo de nuevo.");
+                return;
+            }
+            fila.setTag(FILA_GUARDADA);
+        }
+        if (diaActual == totalDias) {
+            startActivity(new Intent(this, ventana_entrenar.class));
+            finish();
+        } else {
+            diaActual++;
+            tabla.removeViews(1, tabla.getChildCount() - 1);
+            mostrarDia();
+            nuevaFila();
+        }
+    }
+
+    //metodo para comprobar que un valor sea positivo
+    private boolean positivo(String texto) {
+        try { return Integer.parseInt(texto) > 0; }
+        catch (NumberFormatException e) { return false; }
+    }
+
+    //metodo para comprobar que un valor no sea negativo, salvo el -1
+    private boolean numeroPeso(String texto) {
+        try { return Double.parseDouble(texto) >= 0 || "-1".equals(texto); }
+        catch (NumberFormatException e) { return false; }
+    }
+
+    //Metodo para enviar un aviso rapido
+    private void aviso(String mensaje) {
+        new AlertDialog.Builder(this).setMessage(mensaje).setPositiveButton("Entendido", null).show();
+    }
+
+    //metodo para annadir una nueva fila
+    private void nuevaFila() {
+        TableRow fila = new TableRow(this);
+        EditText nombre = entrada(160, InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        EditText series = entrada(64, InputType.TYPE_CLASS_NUMBER);
+        EditText repes = entrada(64, InputType.TYPE_CLASS_NUMBER);
+        EditText peso = entrada(64, InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        CheckBox libre = new CheckBox(this);
+        libre.setBackgroundResource(R.drawable.border_tabla);
+        libre.setLayoutParams(new TableRow.LayoutParams((int) (80 * getResources().getDisplayMetrics().density),
+                TableRow.LayoutParams.WRAP_CONTENT));
+        libre.setOnCheckedChangeListener((boton, marcado) -> {
+            peso.setEnabled(!marcado);
+            peso.setText(marcado ? "-1" : "");
         });
-
-        // Agregar las celdas a la fila
-        tablaEjerc.addView(textViewNombre); //0
-        tablaEjerc.addView(textViewSeries); //1
-        tablaEjerc.addView(textViewRepes); //2
-        tablaEjerc.addView(textViewPeso);  //3
-        tablaEjerc.addView(checkFallo); //4 //TASK: 13
-
-        // Agregar la fila a la tabla
-        tableLayout.addView(tablaEjerc);
+        fila.addView(nombre);
+        fila.addView(series);
+        fila.addView(repes);
+        fila.addView(peso);
+        fila.addView(libre);
+        tabla.addView(fila);
     }
 
+    //Es para crear celdas editables para una nueva fila,ancho de la celda y el tipo de teclado y contenido permitido, los tipos estan en InputType
+    private EditText entrada(int anchoDp, int tipo) {
+        EditText campo = new EditText(this);
+        campo.setLayoutParams(new TableRow.LayoutParams((int) (anchoDp * getResources().getDisplayMetrics().density),
+                TableRow.LayoutParams.WRAP_CONTENT));
+        campo.setBackgroundResource(R.drawable.border_tabla); //fondo
+        campo.setPadding(8, 10, 8, 10); //espacio interno
+        campo.setSingleLine(true);// una unica linea
+        campo.setTextColor(0xFF000000); //texto negro
+        campo.setInputType(tipo); //el tipo del texto, numerico,decimal,texto, etc...
+        return campo; //devuelve el campo ya preparado para annadirlo a una TableRow
+    }
 
     //CAMPOS DE CLASE
-    private int idRutina; //id rutina generado en la pantalla anterior
-    private int sdias; //dias totales que tiene la rutina, viene de la pantalla anterior
-    private int actDia = 1; //dia actual de la rutina que esta rellenado, donde esta metiendo los ejercicios actuales
-    private TextView nactDia;
+    private static final String FILA_COMPARTIDA = "compartida"; //etiquetas para una fila visual de un ejercicio copiado desde otro dia
+    private static final String FILA_GUARDADA = "guardada";//etiqueta para una fila nueva que se inserto correctamente en la base de datos al pulsar “Finalizar dia”.
+    private final Modelo modelo = new Modelo();
+    private int idRutina;
+    private int totalDias;
+    private int diaActual = 1;
+    private TableLayout tabla; //Referencia a la tabla visual del XML
+    private TextView etiquetaDia; //texto de los dias
+    private Button copiarDia;
+    private Button copiarEjercicio;
 
-    private TableLayout tableLayout; //nuestra tabla
-    private int contador = 1; //contador para los ejercicios insertados
 }

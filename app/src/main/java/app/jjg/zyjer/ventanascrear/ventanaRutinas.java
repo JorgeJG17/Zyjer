@@ -1,3 +1,9 @@
+/*
+Clase ventanaRutinas.java
+Fecha actualiza: 07/10/2026
+Autor: Jorge Jimenez Garrido
+Descripcion: Desde esta pantalla podemos crear nuestras ruitinas
+*/
 package app.jjg.zyjer.ventanascrear;
 
 import android.content.Intent;
@@ -41,9 +47,33 @@ public class ventanaRutinas extends AppCompatActivity {
         EditText tdias = findViewById(R.id.textDias);
 
         //rut.setId("1");
-        String sdias = tdias.getText().toString();
+        String sdias = tdias.getText().toString().trim();
+        String nombre = tNom.getText().toString().trim();
+
+        //Debemos de tener un nombre
+        if (nombre.isEmpty()) {
+            tNom.setError("Escribe un nombre para la rutina");
+            tNom.requestFocus();
+            return;
+        }
+
+        int dias;
+
+        try {
+            dias = Integer.parseInt(sdias);
+        } catch (NumberFormatException e) { //Debemos de tener un numero de dias
+            tdias.setError("Introduce un número de días");
+            tdias.requestFocus();
+            return;
+        }
+        //Minimo tene que tener 1 dia
+        if (dias < 1) {
+            tdias.setError("La rutina debe tener al menos un día");
+            tdias.requestFocus();
+            return;
+        }
         rut.setDias(sdias);
-        rut.setNombre(tNom.getText().toString());
+        rut.setNombre(nombre);
 
         int resInsert = obj.InsertaRutina(ventanaRutinas.this,rut);
 
@@ -54,7 +84,7 @@ public class ventanaRutinas extends AppCompatActivity {
 
             Intent intent = new Intent(this, ventanaEjercicios.class);
             intent.putExtra("idRutina", id); //Le enviamos el id de la rutina a la siguiente pantalla
-            intent.putExtra("sdias", Integer.parseInt(sdias));
+            intent.putExtra("sdias", dias);
             startActivity(intent);//Llamamos a la siguiente pantalla
 
         } else if(resInsert == 2){ //Devuelve 2 si ya existe una rutina con ese nombre
@@ -66,7 +96,7 @@ public class ventanaRutinas extends AppCompatActivity {
            //Toast.makeText(ventanaRutinas.this, "Ya tienes una rutina creada cin ese nombre. No puedes tener dos rutinas con el mismo nombre", Toast.LENGTH_SHORT).show();
 
         } else{ //Ha lanzado un error no controlado
-            Toast.makeText(ventanaRutinas.this, "¡Ups! Algo salió mal. Por favor, infórmaselo al desarrollador. Recuerda que esta es una versión Alfa.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ventanaRutinas.this, "¡Ups! Algo salió mal. Por favor, infórmaselo al desarrollador. Recuerda que esta es una versión Beta.", Toast.LENGTH_SHORT).show();
         }
     }
 }
